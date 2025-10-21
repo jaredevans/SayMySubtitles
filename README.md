@@ -10,7 +10,7 @@ This project was created to bridge the accessibility gap for videos that primari
 
 *   **Text-to-Speech:** Converts subtitle text into spoken audio.
 *   **Audio Syncing:** Automatically times the generated audio to match the subtitle timestamps.
-*   **Video Integration:** Merges the generated audio track with your existing video file.
+*   **Video Integration:** Merges the generated audio track with your existing video file into a new video file with the audio track.
 *   **User-Friendly Interface:** A simple app for macOS users.
 
 ## Getting Started
