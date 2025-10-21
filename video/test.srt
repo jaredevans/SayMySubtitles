@@ -1,0 +1,28 @@
+1
+00:00:00,000 --> 00:00:05,560
+ Abraham Lincoln was the 16th President of the United States, serving from 1861 until
+
+2
+00:00:05,560 --> 00:00:11,200
+ his assassination in 1865. He led the nation through the Civil War, preserved the Union,
+
+3
+00:00:11,200 --> 00:00:16,160
+ and issued the Emancipation Proclamation, which paved the way for the abolition of slavery.
+
+4
+00:00:16,160 --> 00:00:21,560
+ Lincoln was born in a log cabin in Kentucky, largely self-educated, and became a lawyer.
+
+5
+00:00:21,560 --> 00:00:26,500
+ His leadership, speeches like the Gettysburg Address, and dedication to equality made him
+
+6
+00:00:26,500 --> 00:00:31,840
+ one of America's most admired Presidents. His legacy continues to inspire people around
+
+7
+00:00:31,840 --> 00:00:32,340
+ the world.
+
