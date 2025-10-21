@@ -19,22 +19,49 @@ This project was created to bridge the accessibility gap for videos that primari
 
 *   A Silicon Mac (M1,M2,M3,M4) running a recent version of macOS, Tahoe or Sequoia.
 
+## 🧩 Getting Started
+
 ### Installation
 
-1.  Download the latest version of `SayMySubtitles.app`.
-2.  Drag `SayMySubtitles.app` to your `Applications` folder.
-3.  Right-click the app and select "Open" to run it for the first time. You may need to grant it permissions in your Mac's security settings.
+1. **Download** the latest version of `SayMySubtitles.dmg`.
 
-## Usage
+2. **Open** the DMG file — you’ll see a **SayMySubtitles** folder and an **Applications** shortcut.
 
-1.  Open the `SayMySubtitles` app.
-2.  Select your video file (`.mp4`, `.mov`, etc.).
-3.  Select your subtitle file (`.srt`).
-4.  Click the "Generate Audio" button.
-5.  The app will process the video and save a new version with the added audio track in the same directory as the original video.
+3. **Drag the `SayMySubtitles` folder** to your **Applications** folder.  
+   This folder contains:
+   - `SayMySubtitles.app`
+   - the `bin/` and `video/` directories
+   - and a helper script `1-Allow-Run.command`
 
+4. **Run the `1-Allow-Run.command` script** once after copying.  
+   It removes macOS’s quarantine flags and ensures the app and `ffmpeg` binary are executable.  
+   - Double-click it, or  
+   - Right-click → **Open** → **Open** if macOS shows a warning.
 
+5. After that, **right-click `SayMySubtitles.app` → Open** (the first time only) and confirm if prompted in  
+   **System Settings ▸ Privacy & Security ▸ Open Anyway**.  
+   This is required because the app is not Apple-signed.
 
-## License
+---
 
-Distributed under the MIT License. See `LICENSE` for more informati
+### Usage
+
+1. **Open** the `SayMySubtitles` app.
+
+2. **Drag and drop** your video file (`.mp4`, `.mov`, etc.) and your subtitle file (`.srt`) into the window.
+
+3. Choose a **voice** from the dropdown menu.
+
+4. Click **Replace Audio**.  
+   The app will generate a timed spoken narration of each subtitle line and automatically replace the
+   video’s audio track with that narration.
+
+5. When finished, a new video file will be saved next to your original, named:
+
+   ```text
+   <original_name>_tts_audio.mp4
+   ```
+### Notes
+	•	The app works entirely offline — all processing is done locally using macOS’s built-in text-to-speech
+and a bundled ffmpeg binary.
+	•	Your original video and subtitle files are never modified.
