@@ -58,10 +58,12 @@ This project was created to bridge the accessibility gap for videos that primari
 
 5. When finished, a new video file will be saved next to your original, named:
 
-   ```text
+   ```
    <original_name>_tts_audio.mp4
    ```
 ### Notes
-	•	The app works entirely offline — all processing is done locally using macOS’s built-in text-to-speech
+
+The app works entirely offline — all processing is done locally using macOS’s built-in text-to-speech
 and a bundled ffmpeg binary.
-	•	Your original video and subtitle files are never modified.
+
+Your original video and subtitle files are never modified.
