@@ -29,7 +29,7 @@ This project was created to bridge the accessibility gap for videos that primari
 
 3. **Drag the `SayMySubtitles` folder** to the **/Applications** folder.  Go to /Applications folder and open the SayMySubtitles folder.
    
-4. **Run the `1-Allow-Run.command` script** once after copying.  
+4. **Run the `1-Allow-Run.command` script** once.  
    It removes macOS’s quarantine flags and ensures the app and `ffmpeg` binary are executable.  
    - it will be blocked when you try to run it for the first time.
    - Go to **System Settings ▸ Privacy & Security ▸ Open Anyway**. 
