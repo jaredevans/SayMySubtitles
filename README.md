@@ -17,11 +17,7 @@ This project was created to bridge the accessibility gap for videos that primari
 
 ### Prerequisites
 
-*   A Mac running a recent version of macOS.
-*   [ffmpeg](https://ffmpeg.org/): The application uses `ffmpeg` for video and audio processing. While it's bundled with the app, you can also install it manually via [Homebrew](https://brew.sh/):
-    ```sh
-    brew install ffmpeg
-    ```
+*   A Silicon Mac (M1,M2,M3,M4) running a recent version of macOS, Tahoe or Sequoia.
 
 ### Installation
 
@@ -37,18 +33,8 @@ This project was created to bridge the accessibility gap for videos that primari
 4.  Click the "Generate Audio" button.
 5.  The app will process the video and save a new version with the added audio track in the same directory as the original video.
 
-## Contributing
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See `LICENSE` for more informati
