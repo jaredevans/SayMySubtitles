@@ -25,9 +25,9 @@ This project was created to bridge the accessibility gap for videos that primari
 
 1. **Download** the latest version of [SayMySubtitles.dmg](https://github.com/jaredevans/SayMySubtitles/releases/tag/1.0).
 
-2. **Open** the DMG file — you’ll see a **SayMySubtitles** folder and an **Applications** shortcut.
+2. **Open** the DMG file — you’ll see a **SayMySubtitles** folder and an **/Applications** shortcut.
 
-3. **Drag the `SayMySubtitles` folder** to your **Applications** folder.  
+3. **Drag the `SayMySubtitles` folder** to the **/Applications** folder.  Go to /Applications folder and open the SayMySubtitles folder.
    
 4. **Run the `1-Allow-Run.command` script** once after copying.  
    It removes macOS’s quarantine flags and ensures the app and `ffmpeg` binary are executable.  
