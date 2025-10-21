@@ -23,7 +23,7 @@ This project was created to bridge the accessibility gap for videos that primari
 
 ### Installation
 
-1. **Download** the latest version of `SayMySubtitles.dmg`.
+1. **Download** the latest version of [SayMySubtitles.dmg](https://github.com/jaredevans/SayMySubtitles/releases/tag/1.0).
 
 2. **Open** the DMG file — you’ll see a **SayMySubtitles** folder and an **Applications** shortcut.
 
