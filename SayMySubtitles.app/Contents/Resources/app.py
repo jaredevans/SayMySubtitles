@@ -22,7 +22,7 @@ from pydub import AudioSegment
 
 # ---------- config ----------
 RATE_WPM = 200            # fixed speaking rate
-DEBUG_KEEP_FILES = True   # when False, do NOT write to LOGFILE at all
+DEBUG_KEEP_FILES = False   # when False, do NOT write to LOGFILE at all
 UI_TITLE = "SayMySubtitles"
 
 # ---------- logging & helpers ----------
