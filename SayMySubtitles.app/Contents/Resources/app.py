@@ -22,7 +22,7 @@ from pydub import AudioSegment
 
 # ---------- config ----------
 RATE_WPM = 200            # fixed speaking rate
-DEBUG_KEEP_FILES = False  # when False, do NOT write to LOGFILE at all
+DEBUG_KEEP_FILES = True   # when False, do NOT write to LOGFILE at all
 UI_TITLE = "SayMySubtitles"
 
 # ---------- logging & helpers ----------
@@ -90,9 +90,10 @@ AudioSegment.converter = FFMPEG  # used by pydub
 # ---------- voice discovery (en_US only, Samantha first) ----------
 
 VOICE_LINE_LOCALE_RE = re.compile(r'\b([a-z]{2}_[A-Z]{2})\b')
+VOICE_CLEAN_RE       = re.compile(r"\s*\(.*\)\s*$")  # strip trailing "(English (US))", etc.
 
 def _collect_say_voice_dump():
-    # try multiple forms; merge stdout+stderr
+    """Collect `say -v ?` style listings, merging stdout+stderr across a few flag variants."""
     outs = []
     cmds = [
         [SAY, "-v", "?"],
@@ -101,19 +102,22 @@ def _collect_say_voice_dump():
     ]
     for c in cmds:
         try:
-            p = run(c, log_cmd=True)
-            outs.append(p.stdout)
-            if p.stderr.strip():
-                outs.append(p.stderr)
+            p = subprocess.run(c, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            s_out = p.stdout.decode("utf-8", "replace")
+            s_err = p.stderr.decode("utf-8", "replace")
+            if s_out.strip(): outs.append(s_out)
+            if s_err.strip(): outs.append(s_err)
         except Exception as e:
             append_log(f"voice dump attempt failed: {e}")
     return "\n".join(outs).strip()
 
 def parse_say_voice_lines(text: str):
+    """Parse lines like: 'Samantha  en_US    # English (United States)' and variants."""
     rows = []
     for raw in text.splitlines():
         line = raw.rstrip()
-        if not line or line.startswith("#"): continue
+        if not line or line.startswith("#"):
+            continue
         pre = line.split('#', 1)[0].rstrip()
         m = VOICE_LINE_LOCALE_RE.search(pre)
         locale = None
@@ -122,7 +126,7 @@ def parse_say_voice_lines(text: str):
             name = pre[:m.start()].strip()
         else:
             name = pre
-            if "(English (US))" in pre:
+            if ("(English (US))" in pre) or ("(English (United States))" in pre):
                 locale = "en_US"
             if not locale:
                 for tok in pre.split():
@@ -140,19 +144,23 @@ def parse_say_voice_lines(text: str):
     return dedup
 
 def voices_en_us():
+    """Return en_US voices with Samantha first; fall back to a minimal set only if dump fails."""
     try:
         dump = _collect_say_voice_dump()
         if not dump:
             raise RuntimeError("empty say -v ? output")
         rows = parse_say_voice_lines(dump)
         en = [n for (n,l,_r) in rows if l == "en_US"]
-        en_extra = [n for (n,l,r) in rows if (l is None and "(English (US))" in r)]
+        # Also include lines that imply US English but lacked explicit en_US token
+        en_extra = [n for (n,l,r) in rows if (l is None and ("(English (US))" in r or "(English (United States))" in r))]
         for v in en_extra:
             if v not in en:
                 en.append(v)
-        # Samantha first, rest sorted
+        # Prefer Samantha first (either label)
         if "Samantha" in en:
             en = ["Samantha"] + [v for v in en if v != "Samantha"]
+        elif "Samantha (English (US))" in en:
+            en = ["Samantha (English (US))"] + [v for v in en if v != "Samantha (English (US))"]
         if len(en) > 1:
             en[1:] = sorted(en[1:])
         if not en:
@@ -172,6 +180,10 @@ def ms(td) -> int:
 
 def mac_say_to_aiff(text: str, out_path: str, voice: str = None):
     """Use macOS 'say' to create AIFF at fixed -r RATE_WPM. Retry without -v if voice missing."""
+    # sanitize voice (strip trailing locale parentheses)
+    if voice:
+        voice = VOICE_CLEAN_RE.sub("", voice).strip()
+
     def build_cmd(use_voice: bool):
         cmd = [SAY, "-o", out_path]
         if use_voice and voice:
@@ -179,6 +191,7 @@ def mac_say_to_aiff(text: str, out_path: str, voice: str = None):
         cmd += ["-r", str(RATE_WPM)]
         cmd += [text]
         return cmd
+
     append_log(f"TTS voice={voice or '(default)'} text='{text[:60]}'")
     try:
         run(build_cmd(use_voice=True))
@@ -362,8 +375,6 @@ class App(NSObject):
             "activateFileViewerSelectingURLs:", [NSURL.fileURLWithPath_(path)], False
         )
 
-    # REMOVED: _setStatusOnMain_ trampoline
-
     @python_method
     def setStatus(self, txt: str):
         """Update status label safely from any thread by calling the label's setter on the main thread."""
@@ -423,13 +434,19 @@ class App(NSObject):
 
         self.voicePop = NSPopUpButton.alloc().initWithFrame_pullsDown_(NSMakeRect(54, 6, 200, 24), False)
 
-        # Populate voices (en_US only), prefer Samantha
+        # Populate voices (en_US only), prefer Samantha (either label), else first item
         for v in self.voices:
             self.voicePop.addItemWithTitle_(v)
-        if "Samantha" in self.voices:
-            self.voicePop.selectItemWithTitle_("Samantha")
+
+        idx = self.voicePop.indexOfItemWithTitle_("Samantha")
+        if idx == -1:
+            idx = self.voicePop.indexOfItemWithTitle_("Samantha (English (US))")
+
+        if idx != -1:
+            self.voicePop.selectItemAtIndex_(idx)
         elif self.voices:
             self.voicePop.selectItemAtIndex_(0)
+
         c.addSubview_(self.voicePop)
 
         # Buttons (bottom-right aligned)
@@ -466,6 +483,9 @@ class App(NSObject):
     @python_method
     def _read_controls(self):
         self.voice = self.voicePop.titleOfSelectedItem()
+        if self.voice:
+            # Strip any trailing parenthetical like " (English (US))"
+            self.voice = VOICE_CLEAN_RE.sub("", self.voice).strip()
 
     @typedSelector(b"v@:@")
     def _showAlert_(self, payload):

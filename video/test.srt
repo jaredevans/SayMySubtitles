@@ -1,6 +1,6 @@
 1
 00:00:00,000 --> 00:00:05,560
- Abraham Lincoln was the 16th President of the United States, serving from 1861 until
+ Abraham Lincoln was the 16th President of America, serving from 1861 until
 
 2
 00:00:05,560 --> 00:00:11,200
