@@ -2,7 +2,7 @@
 
 SayMySubtitles is a macOS application that adds timed audio to your videos based on a `.srt` subtitle file. This is particularly useful for creators who have American Sign Language (ASL) videos and want to make them accessible to a wider audience by adding a spoken audio track that matches the subtitles.
 
-![Screenshot](https://i.imgur.com/zJ9ZIeI.png)
+![Screenshot](https://i.imgur.com/sxE7ktS.png)
 
 ## About The Project
 
